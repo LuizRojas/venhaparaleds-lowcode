@@ -1,0 +1,26 @@
+services:
+    appsmith:
+        image: index.docker.io/appsmith/appsmith-ee
+        container_name: appsmith
+        ports:
+            - "80:80"
+            #  - "443:443"
+        volumes:
+            - ./stacks:/appsmith-stacks    
+        environment:
+            # APPSMITH_INTERNAL_DB_HOSTNAME: db
+            APPSMITH_INTERNAL_DB_PORT: 5432
+        depends_on:
+            - db
+        restart: unless-stopped
+    
+    db:
+        image: postgres:14-alpine
+        container_name: postgres_db_appsmith
+        environment:
+            POSTGRES_DB: processo_seletivo_app
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: Anyplace5-Augmented3-Crop3
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+        restart: always

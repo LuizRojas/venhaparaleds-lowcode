@@ -1,0 +1,11 @@
+/data/postgres/
+/stacks/
+*.log
+.env
+
+node_modules/
+dist/
+build/
+
+.DS_Store
+Thumbs.db
