@@ -6,6 +6,9 @@
 node_modules/
 dist/
 build/
+*.js
+/api_learning/
+/api_rest
 
 .DS_Store
 Thumbs.db
