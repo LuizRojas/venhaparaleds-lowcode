@@ -7,9 +7,6 @@ services:
             - "443:443"
         volumes:
             - ./stacks:/appsmith-stacks    
-        environment:
-            # APPSMITH_INTERNAL_DB_HOSTNAME: db
-            APPSMITH_INTERNAL_DB_PORT: 5432
         depends_on:
             - db
         restart: unless-stopped
@@ -25,19 +22,21 @@ services:
             - "host.docker.internal:host-gateway"  # de acordo com a documentação é necessário para acesso ao datasource local
         volumes:
             - ./data/postgres:/var/lib/postgresql/data
+        # ports:
+        #     - "5432:5432"
         restart: always
     
-    # api_rest:
-    #     build: ./api_rest
-    #     container_name: processo_seletivo_api
-    #     ports:
-    #         - "5000:5000"
-    #     environment:
-    #         DB_HOST: db
-    #         POSTGRES_DB: processo_seletivo_app
-    #         POSTGRES_USER: admin
-    #         POSTGRES_PASSWORD: Anyplace5-Augmented3-Crop3
-    #         DB_PORT: 5432
-    #     depends_on:
-    #         - db
-    #     restart: unless-stopped
+    api_rest:
+        build: ./api_rest
+        container_name: processo_seletivo_api
+        ports:
+            - "5000:5000"
+        environment:
+            DB_HOST: db
+            POSTGRES_DB: processo_seletivo_app
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: Anyplace5-Augmented3-Crop3
+            DB_PORT: 5432
+        depends_on:
+            - db
+        restart: unless-stopped
