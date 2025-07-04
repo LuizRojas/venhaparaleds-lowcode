@@ -22,8 +22,6 @@ services:
             - "host.docker.internal:host-gateway"  # de acordo com a documentação é necessário para acesso ao datasource local
         volumes:
             - ./data/postgres:/var/lib/postgresql/data
-        # ports:
-        #     - "5432:5432"
         restart: always
     
     api_rest:
