@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import psycopg2
 import os
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -263,6 +264,293 @@ def get_candidatos():
         return jsonify({"error": "Erro interno do servidor ao processar a requisição.", "details": str(e)}), 500
     except Exception as e:
         print(f"Erro inesperado: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/candidatos', methods=['POST'])
+def add_candidato():
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        data = request.get_json()
+        nome = data.get('nome')
+        data_nascimento_str = data.get('data_nascimento')
+        cpf = data.get('cpf')
+        profissoes = data.get('profissoes', []) # Espera uma lista de strings
+
+        if not all([nome, data_nascimento_str, cpf]):
+            return jsonify({"error": "Nome, data de nascimento e CPF são obrigatórios."}), 400
+
+        cpf_limpo = cpf.replace('.', '').replace('-', '')
+        
+        try:
+            data_nascimento = datetime.strptime(data_nascimento_str, '%d/%m/%Y').date()
+        except ValueError:
+            return jsonify({"error": "Formato de data de nascimento inválido. Use DD/MM/YY."}), 400
+
+        profissoes_json = json.dumps(profissoes)
+
+        cur = conn.cursor()
+        query = """
+            INSERT INTO Candidatos (nome, data_nascimento, cpf, profissoes)
+            VALUES (%s, %s, %s, %s)
+            RETURNING cpf;
+        """
+        cur.execute(query, (nome, data_nascimento, cpf_limpo, profissoes_json))
+        inserted_cpf = cur.fetchone()[0]
+        conn.commit()
+
+        cur.close()
+        return jsonify({"message": "Candidato adicionado com sucesso!", "cpf": inserted_cpf}), 201
+
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        if "duplicate key value violates unique constraint" in str(e):
+            return jsonify({"error": "CPF já cadastrado."}), 409
+        return jsonify({"error": "Erro de integridade do banco de dados.", "details": str(e)}), 500
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao adicionar candidato: {e}")
+        return jsonify({"error": "Erro interno do servidor ao adicionar candidato.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao adicionar candidato: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/candidatos/<string:cpf>', methods=['PUT'])
+def update_candidato(cpf):
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        data = request.get_json()
+        cpf_limpo = cpf.replace('.', '').replace('-', '')
+
+        updates = []
+        params = []
+
+        if 'nome' in data:
+            updates.append("nome = %s")
+            params.append(data['nome'])
+        if 'data_nascimento' in data:
+            try:
+                data_nascimento = datetime.strptime(data['data_nascimento'], '%Y-%m-%d').date()
+                updates.append("data_nascimento = %s")
+                params.append(data_nascimento)
+            except ValueError:
+                return jsonify({"error": "Formato de data de nascimento inválido. Use YYYY-MM-DD."}), 400
+        if 'profissoes' in data:
+            updates.append("profissoes = %s")
+            params.append(json.dumps(data['profissoes']))
+
+        if not updates:
+            return jsonify({"message": "Nenhum dado para atualizar."}), 200
+
+        query = f"UPDATE Candidatos SET {', '.join(updates)} WHERE cpf = %s RETURNING cpf;"
+        params.append(cpf_limpo)
+
+        cur = conn.cursor()
+        cur.execute(query, tuple(params))
+        updated_cpf = cur.fetchone()
+        conn.commit()
+
+        cur.close()
+        if updated_cpf:
+            return jsonify({"message": "Candidato atualizado com sucesso!", "cpf": updated_cpf[0]}), 200
+        else:
+            return jsonify({"error": "Candidato não encontrado."}), 404
+
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao atualizar candidato: {e}")
+        return jsonify({"error": "Erro interno do servidor ao atualizar candidato.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao atualizar candidato: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/candidatos/<string:cpf>', methods=['DELETE'])
+def delete_candidato(cpf):
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cpf_limpo = cpf.replace('.', '').replace('-', '')
+
+        cur = conn.cursor()
+        query = "DELETE FROM Candidatos WHERE cpf = %s RETURNING cpf;"
+        cur.execute(query, (cpf_limpo,))
+        deleted_cpf = cur.fetchone()
+        conn.commit()
+
+        cur.close()
+        if deleted_cpf:
+            return jsonify({"message": "Candidato deletado com sucesso!", "cpf": deleted_cpf[0]}), 200
+        else:
+            return jsonify({"error": "Candidato não encontrado."}), 404
+
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao deletar candidato: {e}")
+        return jsonify({"error": "Erro interno do servidor ao deletar candidato.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao deletar candidato: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+# --- Endpoints de Edição para Concursos ---
+
+@app.route('/concursos', methods=['POST'])
+def add_concurso():
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        data = request.get_json()
+        orgao = data.get('orgao')
+        edital = data.get('edital')
+        codigo_concurso = data.get('codigo_concurso')
+        lista_vagas = data.get('lista_vagas', []) # Espera uma lista de strings
+
+        if not all([orgao, edital, codigo_concurso]):
+            return jsonify({"error": "Órgão, edital e código do concurso são obrigatórios."}), 400
+
+        lista_vagas_json = json.dumps(lista_vagas)
+
+        cur = conn.cursor()
+        query = """
+            INSERT INTO Concursos (orgao, edital, codigo_concurso, lista_vagas)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id;
+        """
+        cur.execute(query, (orgao, edital, codigo_concurso, lista_vagas_json))
+        inserted_id = cur.fetchone()[0]
+        conn.commit()
+
+        cur.close()
+        return jsonify({"message": "Concurso adicionado com sucesso!", "id": inserted_id}), 201
+
+    except psycopg2.IntegrityError as e:
+        conn.rollback()
+        if "duplicate key value violates unique constraint" in str(e):
+            return jsonify({"error": "Código do concurso já cadastrado."}), 409
+        return jsonify({"error": "Erro de integridade do banco de dados.", "details": str(e)}), 500
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao adicionar concurso: {e}")
+        return jsonify({"error": "Erro interno do servidor ao adicionar concurso.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao adicionar concurso: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/concursos/<string:codigo_concurso>', methods=['PUT'])
+def update_concurso(codigo_concurso):
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        data = request.get_json()
+
+        updates = []
+        params = []
+
+        if 'orgao' in data:
+            updates.append("orgao = %s")
+            params.append(data['orgao'])
+        if 'edital' in data:
+            updates.append("edital = %s")
+            params.append(data['edital'])
+        if 'lista_vagas' in data:
+            updates.append("lista_vagas = %s")
+            params.append(json.dumps(data['lista_vagas']))
+
+        if not updates:
+            return jsonify({"message": "Nenhum dado para atualizar."}), 200
+
+        query = f"UPDATE Concursos SET {', '.join(updates)} WHERE codigo_concurso = %s RETURNING codigo_concurso;"
+        params.append(codigo_concurso)
+
+        cur = conn.cursor()
+        cur.execute(query, tuple(params))
+        updated_codigo_concurso = cur.fetchone()
+        conn.commit()
+
+        cur.close()
+        if updated_codigo_concurso:
+            return jsonify({"message": "Concurso atualizado com sucesso!", "codigo_concurso": updated_codigo_concurso[0]}), 200
+        else:
+            return jsonify({"error": "Concurso não encontrado."}), 404
+
+    except psycopg2.IntegrityError as e: # Caso tente atualizar para um código de concurso já existente
+        conn.rollback()
+        if "duplicate key value violates unique constraint" in str(e):
+            return jsonify({"error": "Novo código do concurso já está em uso."}), 409
+        return jsonify({"error": "Erro de integridade do banco de dados.", "details": str(e)}), 500
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao atualizar concurso: {e}")
+        return jsonify({"error": "Erro interno do servidor ao atualizar concurso.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao atualizar concurso: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/concursos/<string:codigo_concurso>', methods=['DELETE'])
+def delete_concurso(codigo_concurso):
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+        query = "DELETE FROM Concursos WHERE codigo_concurso = %s RETURNING codigo_concurso;"
+        cur.execute(query, (codigo_concurso,))
+        deleted_codigo_concurso = cur.fetchone()
+        conn.commit()
+
+        cur.close()
+        if deleted_codigo_concurso:
+            return jsonify({"message": "Concurso deletado com sucesso!", "codigo_concurso": deleted_codigo_concurso[0]}), 200
+        else:
+            return jsonify({"error": "Concurso não encontrado."}), 404
+
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(f"Erro no banco de dados ao deletar concurso: {e}")
+        return jsonify({"error": "Erro interno do servidor ao deletar concurso.", "details": str(e)}), 500
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro inesperado ao deletar concurso: {e}")
         return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
     finally:
         if conn:

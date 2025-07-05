@@ -4,12 +4,16 @@ services:
         container_name: appsmith
         ports:
             - "80:80"
-            - "443:443"
+            # - "443:443"
         volumes:
             - ./stacks:/appsmith-stacks    
         depends_on:
             - db
+            - api_rest
         restart: unless-stopped
+        networks:
+            default:
+            app_network:
     
     db:
         image: postgres:14-alpine
@@ -23,6 +27,10 @@ services:
         volumes:
             - ./data/postgres:/var/lib/postgresql/data
         restart: always
+        networks:
+            default:
+            app_network:
+                ipv4_address: 172.20.0.10
     
     api_rest:
         build: ./api_rest
@@ -38,3 +46,13 @@ services:
         depends_on:
             - db
         restart: unless-stopped
+        networks:
+            app_network:
+                ipv4_address: 172.20.0.100
+    
+networks:
+    app_network:
+        driver: bridge
+        ipam:
+            config:
+              - subnet: 172.20.0.0/24
