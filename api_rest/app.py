@@ -1,5 +1,3 @@
-# api_rest/app.py
-
 from flask import Flask, jsonify, request
 import psycopg2
 import os
@@ -7,7 +5,7 @@ import json
 
 app = Flask(__name__)
 
-# --- configurações do Banco de Dados (Variáveis de Ambiente do Docker) ---
+# variaveis de ambiente do docker
 # 'db' é o nome do serviço PostgreSQL no docker-compose
 DB_HOST = os.getenv('DB_HOST', 'db')
 DB_NAME = os.getenv('POSTGRES_DB', 'processo_seletivo_app')
@@ -152,7 +150,7 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
                 "nome": candidato[0],
                 "data_nascimento": candidato[1].strftime('%d/%m/%Y') if candidato[1] else None,
                 "cpf": candidato[2],
-                "profissoes": profissoes_tratadas # inclui as profissoes no resultado
+                "profissoes": profissoes_tratadas
             })
 
         cur.close()
@@ -160,6 +158,108 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
 
     except psycopg2.Error as e:
         print(f"Erro no banco de dados ao buscar candidatos por código de concurso: {e}")
+        return jsonify({"error": "Erro interno do servidor ao processar a requisição.", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/concursos', methods=['GET']) # Novo endpoint para listar todos os concursos
+def get_concursos():
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+
+        query = """
+            SELECT
+                orgao,
+                edital,
+                codigo_concurso,
+                lista_vagas::text
+            FROM
+                Concursos
+            ORDER BY
+                edital DESC;
+        """
+
+        cur.execute(query)
+        concursos = cur.fetchall()
+
+        results = []
+        for concurso in concursos:
+            try:
+                lista_vagas_tratada = json.loads(concurso[3]) if concurso[3] else [] # corrigido o índice para 4
+            except json.JSONDecodeError:
+                lista_vagas_tratada = []
+            results.append({
+                "orgao": concurso[0],
+                "edital": concurso[1],
+                "codigo_concurso": concurso[2],
+                "lista_vagas": lista_vagas_tratada
+            })
+
+        cur.close()
+        return jsonify(results), 200
+
+    except psycopg2.Error as e:
+        print(f"Erro no banco de dados ao buscar todos concursos disponíveis: {e}")
+        return jsonify({"error": "Erro interno do servidor ao processar a requisição.", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/candidatos', methods=['GET'])
+def get_candidatos():
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+
+        query = """
+            SELECT
+                nome,
+                data_nascimento,
+                cpf,
+                profissoes::text
+            FROM
+                Candidatos
+            ORDER BY
+                nome DESC;
+        """
+
+        cur.execute(query)
+        concursos = cur.fetchall()
+
+        results = []
+        for concurso in concursos:
+            try:
+                lista_profissoes_tratada = json.loads(concurso[3]) if concurso[3] else [] # corrigido o índice para 4
+            except json.JSONDecodeError:
+                lista_profissoes_tratada = []
+            results.append({
+                "nome": concurso[0],
+                "data_nascimento": concurso[1],
+                "cpf": concurso[2],
+                "profissoes": lista_profissoes_tratada
+            })
+
+        cur.close()
+        return jsonify(results), 200
+
+    except psycopg2.Error as e:
+        print(f"Erro no banco de dados ao buscar todos concursos disponíveis: {e}")
         return jsonify({"error": "Erro interno do servidor ao processar a requisição.", "details": str(e)}), 500
     except Exception as e:
         print(f"Erro inesperado: {e}")
