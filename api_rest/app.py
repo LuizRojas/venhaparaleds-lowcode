@@ -7,6 +7,8 @@ import json
 
 app = Flask(__name__)
 
+# --- configurações do Banco de Dados (Variáveis de Ambiente do Docker) ---
+# 'db' é o nome do serviço PostgreSQL no docker-compose
 DB_HOST = os.getenv('DB_HOST', 'db')
 DB_NAME = os.getenv('POSTGRES_DB', 'processo_seletivo_app')
 DB_USER = os.getenv('POSTGRES_USER', 'admin')
@@ -54,11 +56,12 @@ def get_concursos_by_cpf(cpf):
             SELECT
                 CO.orgao,
                 CO.edital,
-                CO.codigo_concurso
+                CO.codigo_concurso,
+                CO.lista_vagas::text
             FROM
                 Candidatos C
             JOIN
-                Concursos CO ON TRUE -- JOIN inicial para permitir a comparação posterior
+                Concursos CO ON TRUE
             WHERE
                 C.cpf = %s
                 AND EXISTS (
@@ -73,13 +76,17 @@ def get_concursos_by_cpf(cpf):
         cur.execute(query, (cpf_limpo,))
         concursos = cur.fetchall()
 
-       # json
         results = []
         for concurso in concursos:
+            try:
+                lista_vagas_tratada = json.loads(concurso[3]) if concurso[3] else []
+            except json.JSONDecodeError:
+                lista_vagas_tratada = []
             results.append({
                 "orgao": concurso[0],
                 "edital": concurso[1],
-                "codigo_concurso": concurso[2]
+                "codigo_concurso": concurso[2],
+                "lista_vagas": lista_vagas_tratada
             })
 
         cur.close()
@@ -111,16 +118,16 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
 
         cur = conn.cursor()
 
-        # buscar candidatos por código de concurso com logica de encaixe no perfil (mesma do appsmith)
         query = """
             SELECT
                 C.nome,
                 C.data_nascimento,
-                C.cpf
+                C.cpf,
+                C.profissoes::text
             FROM
                 Concursos CO
             JOIN
-                Candidatos C ON TRUE -- JOIN inicial
+                Candidatos C ON TRUE
             WHERE
                 CO.codigo_concurso = %s
                 AND EXISTS (
@@ -135,13 +142,17 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
         cur.execute(query, (codigo_concurso,))
         candidatos = cur.fetchall()
 
-        # Formata os resultados para JSON
         results = []
         for candidato in candidatos:
+            try:
+                profissoes_tratadas = json.loads(candidato[3]) if candidato[3] else []
+            except json.JSONDecodeError:
+                profissoes_tratadas = []
             results.append({
                 "nome": candidato[0],
-                "data_nascimento": candidato[1].strftime('%d/%m/%Y') if candidato[1] else None, # Formata a data
-                "cpf": candidato[2]
+                "data_nascimento": candidato[1].strftime('%d/%m/%Y') if candidato[1] else None,
+                "cpf": candidato[2],
+                "profissoes": profissoes_tratadas # inclui as profissoes no resultado
             })
 
         cur.close()
@@ -158,6 +169,4 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
             conn.close()
 
 if __name__ == '__main__':
-    # rodando via Gunicorn no Docker, este bloco não será executado.
-    # somente testes locais fora do Docker.
     app.run(host='0.0.0.0', port=5000, debug=True)
