@@ -1,0 +1,52 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 33,
+  "boxShadow": "none",
+  "buttonColor": "#eab308",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "left",
+  "iconName": "insert",
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "3cpxkuurp2",
+  "leftColumn": 20,
+  "minWidth": 120,
+  "mobileBottomRow": 34,
+  "mobileLeftColumn": 23,
+  "mobileRightColumn": 39,
+  "mobileTopRow": 30,
+  "needsErrorInfo": false,
+  "onClick": "{{JSCadastrarConcurso.cadastrarConcurso();}}",
+  "originalBottomRow": 32,
+  "originalTopRow": 28,
+  "parentColumnSpace": 6.8125,
+  "parentId": "sn3t2w7xdf",
+  "parentRowSpace": 10,
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 44,
+  "text": "Cadastrar concurso",
+  "topRow": 29,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "ziuq1x4wzi",
+  "widgetName": "CadastrarConcurso"
+}

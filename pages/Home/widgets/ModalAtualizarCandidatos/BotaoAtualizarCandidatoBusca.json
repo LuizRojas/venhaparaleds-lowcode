@@ -1,0 +1,56 @@
+{
+  "animateLoading": true,
+  "borderRadius": "1.5rem",
+  "bottomRow": 22,
+  "boxShadow": "none",
+  "buttonColor": "#3b82f6",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": "{{EntradaAtualizarCandidatoBusca.text != \"\"}}",
+  "dynamicBindingPathList": [
+    {
+      "key": "disabledWhenInvalid"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "disabledWhenInvalid"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "left",
+  "iconName": "search-text",
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "g7c88n4w6o",
+  "leftColumn": 21,
+  "minWidth": 120,
+  "mobileBottomRow": 23,
+  "mobileLeftColumn": 14,
+  "mobileRightColumn": 30,
+  "mobileTopRow": 19,
+  "needsErrorInfo": false,
+  "onClick": "{{JSBuscarCandidatosAlterar.buscarCandidatosAlterar(EntradaAtualizarCandidatoBusca.text);}}",
+  "originalBottomRow": 26,
+  "originalTopRow": 21,
+  "parentColumnSpace": 14.125,
+  "parentId": "x4w3qnbs83",
+  "parentRowSpace": 10,
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 32,
+  "text": "Encontrar",
+  "topRow": 18,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "bleb8eiwht",
+  "widgetName": "BotaoAtualizarCandidatoBusca"
+}

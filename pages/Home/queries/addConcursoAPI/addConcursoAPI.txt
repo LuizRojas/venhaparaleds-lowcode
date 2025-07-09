@@ -1,0 +1,6 @@
+{
+    "orgao": {{ EntradaOrgaoInserir.text }},
+    "edital": {{ appsmith.store.editalFormatadoInserir }},
+    "codigo_concurso": {{ EntradaCodigoConcursoInserir.text }},
+    "lista_vagas": {{ ListaVagasInserir.selectedOptionValues }}
+}

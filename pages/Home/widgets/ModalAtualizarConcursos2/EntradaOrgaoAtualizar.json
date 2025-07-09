@@ -1,0 +1,65 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "autoFocus": false,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 12,
+  "boxShadow": "none",
+  "defaultText": "",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onTextChanged"
+    }
+  ],
+  "errorMessage": "Duas letras pelo menos",
+  "iconAlign": "left",
+  "inputType": "TEXT",
+  "isDisabled": false,
+  "isLoading": false,
+  "isRequired": false,
+  "isSpellCheck": false,
+  "isVisible": true,
+  "key": "errovm82vs",
+  "label": "Órgão",
+  "labelAlignment": "left",
+  "labelPosition": "Left",
+  "labelStyle": "",
+  "labelTextSize": "0.875rem",
+  "labelWidth": 5,
+  "leftColumn": 7,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 11,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 14,
+  "mobileTopRow": 4,
+  "needsErrorInfo": false,
+  "onTextChanged": "",
+  "originalBottomRow": 15,
+  "originalTopRow": 11,
+  "parentColumnSpace": 13.875,
+  "parentId": "io2vrrqdp3",
+  "parentRowSpace": 10,
+  "regex": "",
+  "renderMode": "CANVAS",
+  "resetOnSubmit": true,
+  "responsiveBehavior": "fill",
+  "rightColumn": 22,
+  "showStepArrows": false,
+  "topRow": 8,
+  "type": "INPUT_WIDGET_V2",
+  "version": 2,
+  "widgetId": "jbp6h82t8k",
+  "widgetName": "EntradaOrgaoAtualizar"
+}
