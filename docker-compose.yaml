@@ -51,6 +51,46 @@ services:
             app_network:
                 ipv4_address: 172.20.0.100
     
+    sonarqube:
+        image: sonarqube:lts-community # Versão LTS da comunidade
+        container_name: sonarqube_server
+        ports:
+            - "9000:9000"
+            - "9092:9092"
+        environment:
+            - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar_db:5432/sonar
+            - SONARQUBE_JDBC_USERNAME=sonar
+            - SONARQUBE_JDBC_PASSWORD=sonar_password
+            - SONAR_ES_JAVA_OPTS=-Xmx512m -Xms512m
+        volumes:
+            - sonarqube_data:/opt/sonarqube/data
+            - sonarqube_extensions:/opt/sonarqube/extensions
+            - sonarqube_logs:/opt/sonarqube/logs
+        depends_on:
+            - sonar_db
+        networks:
+            app_network:
+        restart: unless-stopped
+
+    sonar_db:
+        image: postgres:13
+        container_name: sonarqube_postgres_db
+        environment:
+            - POSTGRES_DB=sonar
+            - POSTGRES_USER=sonar
+            - POSTGRES_PASSWORD=sonar_password
+        volumes:
+            - sonar_db_data:/var/lib/postgresql/data
+        networks:
+            app_network:
+        restart: unless-stopped
+
+volumes: 
+    sonarqube_data:
+    sonarqube_extensions:
+    sonarqube_logs:
+    sonar_db_data:    
+    
 networks:
     app_network:
         driver: bridge
