@@ -104,7 +104,7 @@ def get_concursos_by_cpf(cpf):
 @app.route('/candidatos/by_codigo_concurso/<string:codigo_concurso>', methods=['GET'])
 def get_candidatos_by_codigo_concurso(codigo_concurso):
     """
-    Lista o nome, data de nascimento e o CPF dos candidatos que se encaixam
+    Lista o nome, data de nascimento, CPF e as profissões dos candidatos que se encaixam
     no perfil do concurso, tomando como base o Código do Concurso.
     O "encaixe no perfil" é definido pela correspondência entre as vagas
     do concurso e as profissões do candidato.
@@ -167,7 +167,7 @@ def get_candidatos_by_codigo_concurso(codigo_concurso):
         if conn:
             conn.close()
 
-@app.route('/concursos', methods=['GET']) # Novo endpoint para listar todos os concursos
+@app.route('/concursos', methods=['GET'])
 def get_concursos():
     conn = None
     try:
@@ -218,6 +218,90 @@ def get_concursos():
         if conn:
             conn.close()
 
+@app.route('/concursos/<string:codigo_concurso>', methods=['GET'])
+def get_concurso_by_codigo(codigo_concurso):
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+        query = """
+            SELECT
+                orgao,
+                edital,
+                codigo_concurso,
+                lista_vagas::text
+            FROM
+                Concursos
+            WHERE
+                codigo_concurso = %s;
+        """
+        cur.execute(query, (codigo_concurso,))
+        concurso = cur.fetchone() # fetchone() para obter apenas um resultado
+
+        if not concurso:
+            return jsonify({"error": "Concurso não encontrado."}), 404
+
+        try:
+            lista_vagas_tratada = json.loads(concurso[3]) if concurso[3] else []
+        except json.JSONDecodeError:
+            lista_vagas_tratada = []
+
+        result = {
+            "orgao": concurso[0],
+            "edital": concurso[1],
+            "codigo_concurso": concurso[2],
+            "lista_vagas": lista_vagas_tratada
+        }
+
+        cur.close()
+        return jsonify(result), 200
+
+    except psycopg2.Error as e:
+        print(f"Erro no banco de dados ao buscar concurso por código: {e}")
+        return jsonify({"error": "Erro interno do servidor ao buscar concurso.", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Erro inesperado ao buscar concurso por código: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/vagas', methods=['GET'])
+def get_all_vagas():
+    """Endpoint para listar todas as vagas únicas."""
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+        query = """
+            SELECT DISTINCT vaga_unica
+            FROM Concursos, jsonb_array_elements_text(lista_vagas) AS vaga_unica
+            ORDER BY vaga_unica;
+        """
+        cur.execute(query)
+        vagas = cur.fetchall()
+
+        results = [vaga[0] for vaga in vagas]
+
+        cur.close()
+        return jsonify(results), 200
+
+    except psycopg2.Error as e:
+        print(f"Erro no banco de dados ao buscar todas as vagas: {e}")
+        return jsonify({"error": "Erro interno do servidor ao buscar vagas.", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Erro inesperado ao buscar todas as vagas: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
 @app.route('/candidatos', methods=['GET'])
 def get_candidatos():
     conn = None
@@ -241,18 +325,18 @@ def get_candidatos():
         """
 
         cur.execute(query)
-        concursos = cur.fetchall()
+        candidatos = cur.fetchall()
 
         results = []
-        for concurso in concursos:
+        for candidato in candidatos:
             try:
-                lista_profissoes_tratada = json.loads(concurso[3]) if concurso[3] else [] # corrigido o índice para 4
+                lista_profissoes_tratada = json.loads(candidato[3]) if candidato[3] else []
             except json.JSONDecodeError:
                 lista_profissoes_tratada = []
             results.append({
-                "nome": concurso[0],
-                "data_nascimento": concurso[1],
-                "cpf": concurso[2],
+                "nome": candidato[0],
+                "data_nascimento": candidato[1],
+                "cpf": candidato[2],
                 "profissoes": lista_profissoes_tratada
             })
 
@@ -264,6 +348,60 @@ def get_candidatos():
         return jsonify({"error": "Erro interno do servidor ao processar a requisição.", "details": str(e)}), 500
     except Exception as e:
         print(f"Erro inesperado: {e}")
+        return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/candidatos/<string:cpf_candidato>', methods=['GET'])
+def get_candidato_by_cpf(cpf_candidato):
+    """Obter um único candidato por CPF."""
+    conn = None
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Não foi possível conectar ao banco de dados."}), 500
+        
+        cur = conn.cursor()
+        cpf_limpo = cpf_candidato.replace('.', '').replace('-', '')
+
+        query = """
+            SELECT
+                cpf,
+                nome,
+                data_nascimento,
+                profissoes::text
+            FROM
+                Candidatos
+            WHERE
+                cpf = %s;
+        """
+        cur.execute(query, (cpf_limpo,))
+        candidato = cur.fetchone()
+
+        if not candidato:
+            return jsonify({"error": "Candidato não encontrado."}), 404
+
+        try:
+            profissoes_tratadas = json.loads(candidato[3]) if candidato[3] else []
+        except json.JSONDecodeError:
+            profissoes_tratadas = []
+
+        result = {
+            "cpf": candidato[0],
+            "nome": candidato[1],
+            "data_nascimento": candidato[2].strftime('%d/%m/%Y') if candidato[2] else None,
+            "profissoes": profissoes_tratadas
+        }
+
+        cur.close()
+        return jsonify(result), 200
+
+    except psycopg2.Error as e:
+        print(f"Erro no banco de dados ao buscar candidato por CPF: {e}")
+        return jsonify({"error": "Erro interno do servidor ao buscar candidato.", "details": str(e)}), 500
+    except Exception as e:
+        print(f"Erro inesperado ao buscar candidato por CPF: {e}")
         return jsonify({"error": "Erro inesperado do servidor.", "details": str(e)}), 500
     finally:
         if conn:
@@ -416,7 +554,7 @@ def delete_candidato(cpf):
         if conn:
             conn.close()
 
-# --- Endpoints de Edição para Concursos ---
+# endpoints de edição para concursos
 
 @app.route('/concursos', methods=['POST'])
 def add_concurso():
@@ -441,14 +579,14 @@ def add_concurso():
         query = """
             INSERT INTO Concursos (orgao, edital, codigo_concurso, lista_vagas)
             VALUES (%s, %s, %s, %s)
-            RETURNING id;
+            RETURNING codigo_concurso;
         """
         cur.execute(query, (orgao, edital, codigo_concurso, lista_vagas_json))
-        inserted_id = cur.fetchone()[0]
+        inserted_codigo_concurso = cur.fetchone()[0]
         conn.commit()
 
         cur.close()
-        return jsonify({"message": "Concurso adicionado com sucesso!", "id": inserted_id}), 201
+        return jsonify({"message": "Concurso adicionado com sucesso!", "Código do concurso": inserted_codigo_concurso}), 201
 
     except psycopg2.IntegrityError as e:
         conn.rollback()
@@ -535,6 +673,7 @@ def delete_concurso(codigo_concurso):
         cur = conn.cursor()
         query = "DELETE FROM Concursos WHERE codigo_concurso = %s RETURNING codigo_concurso;"
         cur.execute(query, (codigo_concurso,))
+        # print(type(codigo_concurso), codigo_concurso)
         deleted_codigo_concurso = cur.fetchone()
         conn.commit()
 
