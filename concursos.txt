@@ -1,4 +1,0 @@
-Órgão;Edital;Código do Concurso;Lista de Vagas
-SEDU;9/2016;61828450843;[analista de sistemas,marceneiro]
-SEDU;15/2017;61828450842;[carpinteiro,professor de matemática,assistente administrativo]
-SEDU;17/2017;95655123539;[professor de matemática]
