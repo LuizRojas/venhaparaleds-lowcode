@@ -335,7 +335,7 @@ def get_candidatos():
                 lista_profissoes_tratada = []
             results.append({
                 "nome": candidato[0],
-                "data_nascimento": candidato[1],
+                "data_nascimento": candidato[1].strftime('%d/%m/%Y') if candidato[1] else None,
                 "cpf": candidato[2],
                 "profissoes": lista_profissoes_tratada
             })
@@ -645,7 +645,7 @@ def update_concurso(codigo_concurso):
         else:
             return jsonify({"error": "Concurso não encontrado."}), 404
 
-    except psycopg2.IntegrityError as e: # Caso tente atualizar para um código de concurso já existente
+    except psycopg2.IntegrityError as e: # caso tente atualizar para um código de concurso já existente
         conn.rollback()
         if "duplicate key value violates unique constraint" in str(e):
             return jsonify({"error": "Novo código do concurso já está em uso."}), 409
