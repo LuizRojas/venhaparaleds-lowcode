@@ -482,11 +482,11 @@ def update_candidato(cpf):
             params.append(data['nome'])
         if 'data_nascimento' in data:
             try:
-                data_nascimento = datetime.strptime(data['data_nascimento'], '%Y-%m-%d').date()
+                data_nascimento = datetime.strptime(data['data_nascimento'], '%d/%m/%Y').date()
                 updates.append("data_nascimento = %s")
                 params.append(data_nascimento)
             except ValueError:
-                return jsonify({"error": "Formato de data de nascimento inválido. Use YYYY-MM-DD."}), 400
+                return jsonify({"error": "Formato de data de nascimento inválido. Use DD/MM/AAAA."}), 400
         if 'profissoes' in data:
             updates.append("profissoes = %s")
             params.append(json.dumps(data['profissoes']))

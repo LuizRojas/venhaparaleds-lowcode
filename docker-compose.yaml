@@ -43,6 +43,7 @@ services:
             POSTGRES_USER: admin
             POSTGRES_PASSWORD: Anyplace5-Augmented3-Crop3
             DB_PORT: 5432
+            # PYTHONPATH: /app
         depends_on:
             - db
         restart: unless-stopped

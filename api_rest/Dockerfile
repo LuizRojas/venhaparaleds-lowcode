@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# ENV PYTHONPATH=/APP
 EXPOSE 5000
 
 # p/ iniciar a aplicação usando Gunicorn (servidor WSGI)
