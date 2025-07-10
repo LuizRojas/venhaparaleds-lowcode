@@ -1,6 +1,6 @@
 # Desafio LEDS - Sistema de Gerenciamento de Concursos e Candidatos
 
-## Link para acessar a aplicação https://desafio-leds-luizrojas.appsmith.com/app/desafio-back-end-lowcode-leds/home-686eec1a4c97004f2122aea6?branch=main
+## [_Clique para acessar Aplicação_](https://desafio-leds-luizrojas.appsmith.com/app/desafio-back-end-lowcode-leds/home-686eec1a4c97004f2122aea6?branch=main)
 
 ## 1. Contextualização e Objetivo
 
