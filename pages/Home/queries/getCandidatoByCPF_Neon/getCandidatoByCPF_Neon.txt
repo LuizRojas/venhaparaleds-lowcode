@@ -1,0 +1,9 @@
+SELECT
+    cpf,
+    nome,
+    data_nascimento,
+    profissoes::text AS profissoes
+FROM
+    Candidatos
+WHERE
+    cpf = {{ appsmith.store.buscaCandidatobyCPF }};

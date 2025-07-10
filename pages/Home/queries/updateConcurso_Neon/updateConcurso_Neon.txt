@@ -1,0 +1,7 @@
+UPDATE Concursos
+SET
+    orgao = {{ EntradaOrgaoAtualizar.text.toUpperCase().trim() }},
+    edital = {{ EntradaEditalEdicaoAtualizar.text.replace(/\D/g, "") + "/" + EntradaEditalAnoAtualizar.text.replace(/\D/g, "") }},
+    lista_vagas = {{ JSON.stringify(EntradaVagasAtualizar.selectedOptionValues) }}::jsonb
+WHERE
+    codigo_concurso = {{ EntradaAtualizarConcursoBusca.text }};

@@ -1,0 +1,20 @@
+SELECT
+    CO.orgao,
+    CO.edital,
+    CO.codigo_concurso,
+    CO.lista_vagas::text AS lista_vagas
+FROM
+    Candidatos C
+JOIN
+    Concursos CO ON TRUE
+WHERE
+    CO.codigo_concurso = {{ appsmith.store.buscaConcursobyCodigo || '' }}
+    AND
+    EXISTS (
+			SELECT 1
+			FROM jsonb_array_elements_text(C.profissoes) AS p_candidato
+			JOIN jsonb_array_elements_text(CO.lista_vagas) AS v_concurso
+			ON p_candidato = v_concurso
+		)
+ORDER BY
+    CO.edital DESC;

@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "685f6f8d3ebd3f1a7e7cd1c4_2fe12572-6f00-459c-ba15-8049507d4933",
+  "id": "Home_JSBuscarConcursosByCPF",
+  "unpublishedCollection": {
+    "name": "JSBuscarConcursosByCPF",
+    "pageId": "Home",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}

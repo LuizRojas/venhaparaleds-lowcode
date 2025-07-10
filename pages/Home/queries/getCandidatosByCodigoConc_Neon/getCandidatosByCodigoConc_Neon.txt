@@ -1,0 +1,20 @@
+SELECT
+    C.nome,
+    C.data_nascimento,
+    C.cpf,
+    C.profissoes::text AS profissoes
+FROM
+    Concursos CO
+JOIN
+    Candidatos C ON TRUE
+WHERE
+    CO.codigo_concurso = {{ appsmith.store.codigoConcursoCandidatoBuscar }}
+    AND
+    EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements_text(CO.lista_vagas) AS v_concurso
+        JOIN jsonb_array_elements_text(C.profissoes) AS p_candidato
+        ON v_concurso = p_candidato
+    )
+ORDER BY
+    C.nome ASC;

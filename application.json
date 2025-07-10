@@ -1,0 +1,20 @@
+{
+  "appIsExample": false,
+  "appLayout": {
+    "type": "FLUID"
+  },
+  "applicationVersion": 2,
+  "collapseInvisibleWidgets": true,
+  "color": "#ECECEC",
+  "evaluationVersion": 2,
+  "icon": "bag",
+  "pages": [
+    {
+      "id": "Home",
+      "isDefault": true
+    }
+  ],
+  "unpublishedAppLayout": {
+    "type": "FLUID"
+  }
+}

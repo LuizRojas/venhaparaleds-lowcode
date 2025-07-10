@@ -1,0 +1,5 @@
+{
+    "orgao": {{ appsmith.store.orgaoConcursoAlterar }},
+    "edital": {{ appsmith.store.editalFormatadoAlterar }},
+    "lista_vagas": {{ appsmith.store.vagasConcursoAlterar }}
+}

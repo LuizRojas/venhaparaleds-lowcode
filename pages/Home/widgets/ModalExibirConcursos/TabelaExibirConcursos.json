@@ -1,0 +1,347 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowAddNewRow": true,
+  "animateLoading": true,
+  "borderColor": "#E0DEDE",
+  "borderRadius": "1.5rem",
+  "borderWidth": "1",
+  "bottomRow": 45,
+  "boxShadow": "{{appsmith.theme.boxShadow.appBoxShadow}}",
+  "cachedTableData": {},
+  "canFreezeColumn": false,
+  "cellBackground": "#f4f4f5",
+  "childStylesheet": {
+    "button": {
+      "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+      "boxShadow": "none",
+      "buttonColor": "{{appsmith.theme.colors.primaryColor}}"
+    },
+    "editActions": {
+      "discardBorderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+      "discardButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+      "saveBorderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+      "saveButtonColor": "{{appsmith.theme.colors.primaryColor}}"
+    },
+    "iconButton": {
+      "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+      "boxShadow": "none",
+      "buttonColor": "{{appsmith.theme.colors.primaryColor}}"
+    },
+    "menuButton": {
+      "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+      "boxShadow": "none",
+      "menuColor": "{{appsmith.theme.colors.primaryColor}}"
+    }
+  },
+  "columnOrder": [
+    "codigo_concurso",
+    "edital",
+    "orgao",
+    "lista_vagas_json",
+    "EditActions1"
+  ],
+  "columnUpdatedAt": 1752105769616,
+  "columnWidthMap": {
+    "lista_vagas": 471
+  },
+  "customIsLoading": false,
+  "customIsLoadingValue": "",
+  "defaultPageSize": 0,
+  "defaultSelectedRowIndex": 0,
+  "defaultSelectedRowIndices": [
+    0
+  ],
+  "delimiter": ";",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "boxShadow"
+    },
+    {
+      "key": "primaryColumns.codigo_concurso.computedValue"
+    },
+    {
+      "key": "primaryColumns.edital.computedValue"
+    },
+    {
+      "key": "primaryColumns.orgao.computedValue"
+    },
+    {
+      "key": "totalRecordsCount"
+    },
+    {
+      "key": "primaryColumns.EditActions1.saveButtonColor"
+    },
+    {
+      "key": "primaryColumns.EditActions1.saveBorderRadius"
+    },
+    {
+      "key": "primaryColumns.EditActions1.discardBorderRadius"
+    },
+    {
+      "key": "primaryColumns.EditActions1.isSaveDisabled"
+    },
+    {
+      "key": "primaryColumns.EditActions1.isDiscardDisabled"
+    },
+    {
+      "key": "tableData"
+    },
+    {
+      "key": "primaryColumns.lista_vagas_json.computedValue"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "primaryColumns.EditActions1.isSaveDisabled"
+    },
+    {
+      "key": "primaryColumns.EditActions1.isDiscardDisabled"
+    },
+    {
+      "key": "tableData"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onPageChange"
+    },
+    {
+      "key": "onSort"
+    },
+    {
+      "key": "onAddNewRowSave"
+    },
+    {
+      "key": "primaryColumns.EditActions1.onSave"
+    }
+  ],
+  "enableClientSideSearch": true,
+  "endOfData": false,
+  "flexVerticalAlignment": "start",
+  "horizontalAlignment": "LEFT",
+  "inlineEditingSaveOption": "ROW_LEVEL",
+  "isLoading": false,
+  "isSortable": true,
+  "isVisible": true,
+  "isVisibleDownload": false,
+  "isVisibleFilters": true,
+  "isVisiblePagination": true,
+  "isVisibleSearch": true,
+  "key": "pxzmcromqa",
+  "label": "Data",
+  "leftColumn": 0,
+  "minWidth": 450,
+  "mobileBottomRow": 40,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 11,
+  "mobileTopRow": 12,
+  "needsErrorInfo": false,
+  "onAddNewRowSave": "{{Insert_public_concursos1.run(() => {\n            showAlert(\"Successfully created!\");\n            Select_public_concursos1.run()\n          }, () => {\n            showAlert(\"Unable to create!\");\n          })}}",
+  "onPageChange": "{{\n            Select_public_concursos1.run();\n            Total_record_public_concursos1.run()\n          }}",
+  "onSort": "{{\n            Select_public_concursos1.run();\n            Total_record_public_concursos1.run()\n          }}",
+  "parentColumnSpace": 14.478124999999999,
+  "parentId": "9afvyxpp8c",
+  "parentRowSpace": 10,
+  "primaryColumnId": "codigo_concurso",
+  "primaryColumns": {
+    "EditActions1": {
+      "alias": "EditActions1",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "buttonStyle": "rgb(3, 179, 101)",
+      "cellBackground": "#f4f4f5",
+      "columnType": "editActions",
+      "computedValue": "",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "discardActionLabel": "Discard",
+      "discardBorderRadius": "{{TabelaExibirConcursos.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.borderRadius.appBorderRadius)))}}",
+      "discardButtonColor": "#F22B2B",
+      "discardButtonVariant": "TERTIARY",
+      "discardIconAlign": "left",
+      "enableFilter": true,
+      "enableSort": true,
+      "horizontalAlignment": "LEFT",
+      "id": "EditActions1",
+      "index": 4,
+      "isCellEditable": false,
+      "isCellVisible": true,
+      "isDerived": true,
+      "isDisabled": false,
+      "isDiscardDisabled": "{{TabelaExibirConcursos.processedTableData.map((currentRow, currentIndex) => ( !TabelaExibirConcursos.updatedRowIndices.includes(currentIndex)))}}",
+      "isDiscardVisible": true,
+      "isEditable": false,
+      "isSaveDisabled": "{{TabelaExibirConcursos.processedTableData.map((currentRow, currentIndex) => ( !TabelaExibirConcursos.updatedRowIndices.includes(currentIndex)))}}",
+      "isSaveVisible": true,
+      "isVisible": false,
+      "label": "Save / Discard",
+      "notation": "standard",
+      "onSave": "{{Update_public_concursos1.run(() => {\n            showAlert(\"Successfully saved!\");\n            Select_public_concursos1.run()\n          }, () => {\n            showAlert(\"Unable to save!\");\n          })}}",
+      "originalId": "EditActions1",
+      "saveActionLabel": "Save",
+      "saveBorderRadius": "{{TabelaExibirConcursos.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.borderRadius.appBorderRadius)))}}",
+      "saveButtonColor": "{{TabelaExibirConcursos.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.colors.primaryColor)))}}",
+      "saveIconAlign": "left",
+      "sticky": "right",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "codigo_concurso": {
+      "alias": "codigo_concurso",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "cellBackground": "#f4f4f5",
+      "columnType": "text",
+      "computedValue": "{{(() => { const tableData = TabelaExibirConcursos.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"codigo_concurso\"])) : codigo_concurso })()}}",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "fontStyle": "",
+      "horizontalAlignment": "LEFT",
+      "id": "codigo_concurso",
+      "index": 0,
+      "isCellEditable": false,
+      "isCellVisible": true,
+      "isDerived": false,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": false,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "codigo_concurso",
+      "notation": "standard",
+      "originalId": "codigo_concurso",
+      "sticky": "",
+      "textColor": "",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "edital": {
+      "alias": "edital",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "cellBackground": "#f4f4f5",
+      "columnType": "text",
+      "computedValue": "{{(() => { const tableData = TabelaExibirConcursos.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"edital\"])) : edital })()}}",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "fontStyle": "",
+      "horizontalAlignment": "LEFT",
+      "id": "edital",
+      "index": 1,
+      "isCellEditable": true,
+      "isCellVisible": true,
+      "isDerived": false,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": true,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "edital",
+      "notation": "standard",
+      "originalId": "edital",
+      "sticky": "",
+      "textColor": "",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "lista_vagas_json": {
+      "alias": "lista_vagas_json",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "cellBackground": "#f4f4f5",
+      "columnType": "text",
+      "computedValue": "{{(() => { const tableData = TabelaExibirConcursos.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"lista_vagas_json\"])) : lista_vagas_json })()}}",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "fontStyle": "",
+      "horizontalAlignment": "LEFT",
+      "id": "lista_vagas_json",
+      "index": 3,
+      "isCellEditable": false,
+      "isCellVisible": true,
+      "isDerived": false,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": false,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "lista_vagas_json",
+      "notation": "standard",
+      "originalId": "lista_vagas_json",
+      "sticky": "",
+      "textColor": "",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "orgao": {
+      "alias": "orgao",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "cellBackground": "#f4f4f5",
+      "columnType": "text",
+      "computedValue": "{{(() => { const tableData = TabelaExibirConcursos.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"orgao\"])) : orgao })()}}",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "fontStyle": "",
+      "horizontalAlignment": "LEFT",
+      "id": "orgao",
+      "index": 3,
+      "isCellEditable": true,
+      "isCellVisible": true,
+      "isDerived": false,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": true,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "orgao",
+      "notation": "standard",
+      "originalId": "orgao",
+      "sticky": "",
+      "textColor": "",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    }
+  },
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "searchKey": "",
+  "serverSidePaginationEnabled": true,
+  "showInlineEditingOptionDropdown": true,
+  "tableData": "{{getConcursos_Neon.data}}",
+  "textSize": "0.875rem",
+  "topRow": 4,
+  "totalRecordsCount": "{{Total_record_public_concursos1.data[0].count}}",
+  "type": "TABLE_WIDGET_V2",
+  "version": 2,
+  "verticalAlignment": "CENTER",
+  "widgetId": "j8nv64ezzp",
+  "widgetName": "TabelaExibirConcursos"
+}

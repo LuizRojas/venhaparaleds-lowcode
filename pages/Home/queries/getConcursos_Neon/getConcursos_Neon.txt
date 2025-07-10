@@ -1,0 +1,9 @@
+SELECT
+    orgao,
+    edital,
+    codigo_concurso,
+    lista_vagas::text AS lista_vagas_json
+FROM
+    Concursos
+ORDER BY
+    codigo_concurso DESC;

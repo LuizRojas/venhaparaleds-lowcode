@@ -1,0 +1,6 @@
+{
+    "nome": {{ appsmith.store.nomeCandidatoInserir }},
+    "data_nascimento": {{ appsmith.store.aniversarioCandidatoInserir }},
+    "cpf": {{ appsmith.store.cpfCandidatoInserir }},
+    "profissoes": {{ appsmith.store.profissoesCandidatoInserir }}
+}

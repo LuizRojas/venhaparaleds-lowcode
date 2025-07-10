@@ -1,0 +1,55 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 16,
+  "boxShadow": "none",
+  "buttonColor": "#7f1d1d",
+  "buttonStyle": "PRIMARY_BUTTON",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "left",
+  "iconName": "confirm",
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "5gtf3b9r5z",
+  "leftColumn": 13,
+  "minWidth": 120,
+  "mobileBottomRow": 22,
+  "mobileLeftColumn": 47,
+  "mobileRightColumn": 63,
+  "mobileTopRow": 18,
+  "needsErrorInfo": false,
+  "onClick": "{{\nJSConfirmarDeletarCandidato.confirmarDeletarCandidato();\nJSConfirmarDeletarCandidato.limparCampos();\n}}",
+  "originalBottomRow": 15,
+  "originalTopRow": 11,
+  "parentId": "f9uizh7cg0",
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 29,
+  "text": "Deletar",
+  "topRow": 12,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "nms8gdaxng",
+  "widgetName": "BotaoConfirmarDeletarCandidato"
+}

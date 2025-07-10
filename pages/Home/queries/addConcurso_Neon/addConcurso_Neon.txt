@@ -1,0 +1,7 @@
+INSERT INTO Concursos (orgao, edital, codigo_concurso, lista_vagas)
+VALUES (
+    {{ EntradaOrgaoInserir.text.toUpperCase().trim() }},
+    {{ appsmith.store.editalFormatadoInserir }},
+    {{ EntradaCodigoConcursoInserir.text }},
+    {{ JSON.stringify(ListaVagasInserir.selectedOptionValues) }}::jsonb
+);

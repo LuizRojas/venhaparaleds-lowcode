@@ -1,0 +1,7 @@
+UPDATE Candidatos
+SET
+    nome = {{ EntradaNomeAtualizar.text.trim() }},
+    data_nascimento = {{ EntradaAniversarioAtualizar.formattedDate }},
+    profissoes = {{ JSON.stringify(EntradaProfissoesAtualizar.selectedOptionValues) }}::jsonb
+WHERE
+    cpf = {{ EntradaAtualizarCandidatoBusca.text.replace(/[\.\-]/g, '') }};

@@ -1,0 +1,61 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 28,
+  "boxShadow": "none",
+  "defaultOptionValue": "[]",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "sourceData"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": false,
+  "isFilterable": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "ylb8g0ljvz",
+  "labelAlignment": "left",
+  "labelPosition": "Left",
+  "labelText": "Lista de Vagas",
+  "labelTextSize": "0.875rem",
+  "labelWidth": "15",
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 29,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 9,
+  "mobileTopRow": 22,
+  "needsErrorInfo": false,
+  "optionLabel": "name",
+  "optionValue": "code",
+  "originalBottomRow": 27,
+  "originalTopRow": 23,
+  "parentColumnSpace": 12.21875,
+  "parentId": "sn3t2w7xdf",
+  "parentRowSpace": 10,
+  "placeholderText": "Select option(s)",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 63,
+  "serverSideFiltering": false,
+  "sourceData": "[\n  {\n    \"name\": \"analista de sistemas\",\n    \"code\": \"analista de sistemas\"\n  },\n  {\n    \"name\": \"carpinteiro\",\n    \"code\": \"carpinteiro\"\n  },\n  {\n    \"name\": \"professor de matemática\",\n    \"code\": \"professor de matematica\"\n  },\n\t{\n\t\t\"name\": \"assistente adminstrativo\",\n\t\t\"code\": \"assistente administrativo\"\n\t}\n]",
+  "topRow": 24,
+  "type": "MULTI_SELECT_WIDGET_V2",
+  "version": 1,
+  "widgetId": "4x313xfz5s",
+  "widgetName": "ListaVagasInserir"
+}

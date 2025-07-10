@@ -1,0 +1,53 @@
+{
+  "animateLoading": true,
+  "borderColor": "",
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 26,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "0.875rem",
+  "fontStyle": "ITALIC",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "3k131bglhm",
+  "leftColumn": 24,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 24,
+  "mobileLeftColumn": 21,
+  "mobileRightColumn": 37,
+  "mobileTopRow": 20,
+  "needsErrorInfo": false,
+  "originalBottomRow": 26,
+  "originalTopRow": 22,
+  "overflow": "NONE",
+  "parentColumnSpace": 8.96875,
+  "parentId": "hrbvvuu84j",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 40,
+  "shouldTruncate": false,
+  "text": "- Informações -",
+  "textAlign": "CENTER",
+  "textColor": "#231F20",
+  "topRow": 22,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "4mn26v75g7",
+  "widgetName": "SubtituloDeletarCandidatos"
+}

@@ -1,0 +1,7 @@
+INSERT INTO Candidatos (nome, data_nascimento, cpf, profissoes)
+VALUES (
+    {{ EntradaNomeInserir.text.trim() }},
+    {{ EntradaAniversarioInserir.formattedDate }},
+    {{ EntradaCPFInserir.text.replace(/\D/g, "").trim() }},
+    {{ JSON.stringify(ProfissoesInserir.selectedOptionValues) }}::jsonb
+);
