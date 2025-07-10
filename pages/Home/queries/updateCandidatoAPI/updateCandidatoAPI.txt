@@ -1,5 +1,0 @@
-{
-    "nome": {{ appsmith.store.nomeCandidatoAlterar }},
-    "data_nascimento": {{ appsmith.store.AniversarioCandidatoAlterar }},
-    "profissoes": {{ appsmith.store.profissoesCandidatoAlterar }}
-}
