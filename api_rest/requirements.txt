@@ -1,0 +1,6 @@
+psycopg2-binary==2.9.9
+gunicorn==21.2.0  # WSGI para producao
+Flask==2.3.2
+pytest==8.2.2
+pytest-cov==4.1.0  # para relatorio de cobertura
+Werkzeug==2.3.7
