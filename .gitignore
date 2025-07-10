@@ -1,0 +1,17 @@
+# diretorios de dados do Docker Compose (GERADOS EM TEMPO DE EXECUÇÃO)
+/data/
+/stacks/
+/sonarqube_data/
+/postgres_config/
+/sonarqube_extensions/
+/sonarqube_logs/
+/sonar_db_data/
+
+# Caches e arquivos gerados pelo Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage # Arquivo de cobertura de testes gerado pelo pytest-cov
+.env
+Thumbs.db
+*.log
